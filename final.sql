@@ -475,14 +475,14 @@ POSTAL_CODE CHAR(5),
 PHONE CHAR(12) );
 
 -- 2.
-SELECT customer_num, first_name, last_name
+SELECT CUSTOMER_NUM, FIRST_NAME, LAST_NAME
 FROM CUSTOMER;
 
 -- 3.
-SELECT COUNT(*) FROM CUSTOMER;
+SELECT count(*) FROM CUSTOMER;
 
 -- 4.
-INSERT INTO CUSTOMER (first_name, last_name, customer_num)
+INSERT INTO CUSTOMER (FIRST_NAME, LAST_NAME, CUSTOMER_NUM)
 VALUES ('Amber', 'Garelle', '127');
 
 -- 5.
@@ -504,7 +504,7 @@ WHERE
 	customer_num = '127' AND
 	first_name = 'Amber' AND
     last_name = 'Garelle';
-
+    
 -- 9.
 -- The LEFT JOIN returns all the rows from the table on the left 
 -- even if no matching rows have been found in the table on the right
@@ -512,3 +512,79 @@ SELECT *
 FROM customer
 LEFT JOIN reservation
 ON customer.customer_num = reservation.customer_num;
+
+-- 10.a
+-- Show all of the trips and all of the guides
+SELECT *
+FROM trip
+LEFT JOIN trip_guides
+ON trip.trip_id = trip_guides.trip_id;
+
+-- 10.b
+-- Show the trip that did not have a guide
+SELECT *
+FROM trip
+LEFT JOIN trip_guides
+ON trip.trip_id = trip_guides.trip_id
+WHERE GUIDE_NUM IS NULL;
+
+-- 11.a
+-- The WHERE keyword must all be included in order to specify 
+-- which records should be removed from the table.
+
+-- 11.b
+UPDATE customer
+SET last_name = 'Chang'
+WHERE
+	first_name = 'Martha' AND
+    last_name = 'Bers';
+    
+SELECT * FROM customer;
+
+-- 12.
+DROP TABLE customerBak;
+
+-- 13.
+SELECT 
+	trip.trip_id,
+    SUM((trip_price + other_fees) * num_persons) as revenue
+FROM trip
+JOIN reservation
+ON trip.trip_id = reservation.trip_id
+GROUP BY trip.trip_id
+ORDER BY revenue DESC;
+
+-- 14.
+-- =*([@[trip_price]]+[@[other_fees])*[@[num_persons]]]
+
+-- SELECT *
+-- FROM trip
+-- JOIN reservation
+-- ON trip.trip_id = reservation.trip_id
+--  INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\reservation.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
+
+-- 15.
+SELECT COUNT(*)
+FROM customer
+WHERE last_name LIKE '%br%';
+
+-- 16.
+CREATE TABLE country
+(
+	country_id INT AUTO_INCREMENT PRIMARY KEY,
+	continent VARCHAR(30),
+	country VARCHAR (30),
+	capital VARCHAR(30),
+    population INT,
+    total_area VARCHAR(30)
+);
+
+LOAD DATA LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\countries.csv' 
+INTO TABLE country
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n' -- for Windows
+-- LINES TERMINATED BY '\n' -- for MacOS / Linux
+IGNORE 1 ROWS;
+
+-- SELECT * FROM country;
