@@ -485,4 +485,6 @@ SELECT COUNT(*) FROM CUSTOMER;
 INSERT INTO CUSTOMER (first_name, last_name, customer_num)
 VALUES ('Amber', 'Garelle', '127');
 
-SELECT * FROM customer;
+-- 5.
+ALTER TABLE customerBak
+ADD GENDER VARCHAR(10);
