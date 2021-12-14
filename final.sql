@@ -488,3 +488,27 @@ VALUES ('Amber', 'Garelle', '127');
 -- 5.
 ALTER TABLE customerBak
 ADD GENDER VARCHAR(10);
+
+-- 6.
+ALTER TABLE customerBak
+DROP COLUMN GENDER;
+
+-- 7.
+ALTER TABLE reservation
+ADD FOREIGN KEY (customer_num)
+REFERENCES customer(customer_num);
+
+-- 8.
+DELETE FROM customer
+WHERE
+	customer_num = '127' AND
+	first_name = 'Amber' AND
+    last_name = 'Garelle';
+
+-- 9.
+-- The LEFT JOIN returns all the rows from the table on the left 
+-- even if no matching rows have been found in the table on the right
+SELECT * 
+FROM customer
+LEFT JOIN reservation
+ON customer.customer_num = reservation.customer_num;
